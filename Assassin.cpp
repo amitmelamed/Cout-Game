@@ -10,9 +10,11 @@ using namespace std;
 
 namespace coup{
     Assassin::Assassin(Game &game, string name) : Player(game,name){
-        playerRole="Assassin";
+        this->setRole("Assassin");
     }
-    void Assassin::coup(Player player) {
-        cout<<"assassin coup "<<player.getName()<<"n";
+    void Assassin::coup(Player rival) {
+        if(getCoinsCount()<3){
+            throw std::invalid_argument("assassins coup require 3 coins");
+        }
     }
 }

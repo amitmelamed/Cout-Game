@@ -12,7 +12,7 @@ using namespace std;
 namespace coup{
 
     Ambassador::Ambassador(Game &game, string name) : Player(game,name){
-        playerRole="Ambassador";
+        this->setRole("Ambassador");
     }
 
     void Ambassador::transfer(Player from, Player to) {

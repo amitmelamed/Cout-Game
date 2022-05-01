@@ -11,7 +11,7 @@ using namespace std;
 
 namespace coup{
     Duke::Duke(Game &game, string name) : Player(game,name){
-        playerRole="Duke";
+        setRole("Duke");
     }
     void Duke::tax() {
         cout<<"tax by duke\n";

@@ -20,18 +20,30 @@ namespace coup{
     class Game;
     class Player{
 
-    protected:
-        Game *game;
+    private:
+        //-----variables-----
         int coinsCount;
         string name;
         string playerRole;
+    protected:
     public:
-        string getName();
+        Game *game;
+        //-----constructors-----
         Player(Game &game,string name);
+
+        //-----getters and setters-----
+        string role();
+        int getCoinsCount();
+        string coins();
+        string getName();
+        void setRole(string role);
+        void setCoins(int num);
+        void setName(string name);
+
+        //-----Actions-----
         void income();
         void foreign_aid();
         void coup(Player rival);
-        string role();
-        string coins();
+
     };
 }

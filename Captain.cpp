@@ -9,11 +9,10 @@
 using namespace std;
 namespace coup{
     Captain::Captain(Game &game, string name) : Player(game,name){
-        playerRole="Captain";
+        this->setRole("Captain");
     }
     void Captain::steal(Player player) {
         cout<<"steal from "<<player.getName()<<"\n";
-
     }
 
     void Captain::block(Player player) {
