@@ -13,8 +13,9 @@
 #include "Contessa.hpp"
 #include "Game.hpp"
 
+#include <exception>
+
 using namespace coup;
-#include <string>
 
 #include <iostream>
 #include <stdexcept>
@@ -51,74 +52,25 @@ int main() {
 	cout << game_1.turn() << endl;
 
 	// throws no exceptions
-	duke.income();
-	assassin.income();
-	ambassador.income();
-	captain.income();
-	contessa.income();
+    for (int i = 0; i < 50; ++i) {
+        duke.income();
+        assassin.income();
+        ambassador.income();
+        captain.income();
+        contessa.income();
+    }
+    duke.coup(assassin);
+    ambassador.coup(captain);
+    contessa.coup(duke);
+    ambassador.coup(contessa);
 
-	// throws exception, it is duke's turn now
-	assassin.income();
 
-	duke.income();
-	assassin.foreign_aid();
 
-	// throws exception, the last operation duke performed
-	// is income, which cannot be blocked by any role
-	captain.block(duke);
+    vector<string> s=game_1.players();
 
-	cout << duke.coins() << endl; // prints 2
-	cout << assassin.coins() << endl; // prints 3
-
-	// throws exception, the last operation duke performed
-	// is foreign aid, which cannot be blocked by contessa
-	contessa.block(assassin);
-
-	duke.block(assassin);
-	cout << assassin.coins() << endl; // prints 1
-
-	ambassador.transfer(duke, assassin); //transfers 1 coin from duke to assassin
-	captain.foreign_aid();
-	contessa.foreign_aid();
-
-	duke.tax();
-	assassin.income();
-	ambassador.foreign_aid();
-	captain.steal(contessa);
-	contessa.foreign_aid();
-
-	duke.tax();
-	// no exception, assassin can coup with only 3 coins
-	assassin.coup(duke);
-
-	players = game_1.players();
-	/*
-		prints:
-		Yossi
-		Meirav
-		Reut
-		Gilad
-	*/
-	for (string name : players)
-	{
-		cout << name << endl;
-	}
-
-	contessa.block(assassin);
-
-	players = game_1.players();
-	/*
-		prints:
-		Moshe
-		Yossi
-		Meirav
-		Reut
-		Gilad
-	*/
-	for (string name : players)
-	{
-		cout << name << endl;
-	}
+    for (size_t i = 0; i < s.size(); ++i) {
+        cout<<s.at(i)<<endl;
+    }
 
 }
 

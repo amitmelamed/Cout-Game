@@ -10,7 +10,7 @@ using namespace std;
 
 namespace coup{
     Contessa::Contessa(Game &game, string name): Player(game,name) {
-        this->setRole("Contessa");
+        setRole(contessa);
 
     }
     void Contessa::block(Player player) {

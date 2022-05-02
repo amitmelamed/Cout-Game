@@ -1,49 +1,47 @@
 //
-// Created by lucas on 26/04/2022.
+// Created by lucas on 02/05/2022.
 //
-#pragma once
+
+#ifndef COUT_GAME_PLAYER_HPP
+#define COUT_GAME_PLAYER_HPP
+
 #include <iostream>
-#include <stdexcept>
-#include <vector>
-#include <string>
-#include "Game.hpp"
+#include "enums_header.hpp"
+
 
 using namespace std;
-
 namespace coup{
-
-    /**
-     * The player class represent player in the game.
-     * each players have amount od coins.
-     * each player have a name and Role.
-     */
     class Game;
     class Player{
-
     private:
-        //-----variables-----
-        int coinsCount;
+        // -----Variables-----
         string name;
-        string playerRole;
-    protected:
-    public:
         Game *game;
-        //-----constructors-----
-        Player(Game &game,string name);
+        int coinsCount;
+        Roles currentRole;
+        bool alive;
+    public:
+        // -----Constructors-----
+        Player(Game &,string);
 
-        //-----getters and setters-----
-        string role();
-        int getCoinsCount();
-        string coins();
-        string getName();
-        void setRole(string role);
-        void setCoins(int num);
-        void setName(string name);
+        // -----Getters-----
+        bool isAlive();
+        string getName() const;
+        string role() const;
+        int coins() const;
+        Game* getGame() const;
+
+        // -----Setters-----
+        void setRole(Roles);
+        void setCoins(int);
+
 
         //-----Actions-----
         void income();
         void foreign_aid();
-        void coup(Player rival);
-
+        virtual void coup(Player&);
     };
 }
+
+
+#endif //COUT_GAME_PLAYER_HPP

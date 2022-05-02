@@ -11,10 +11,14 @@ using namespace std;
 
 namespace coup{
     Duke::Duke(Game &game, string name) : Player(game,name){
-        setRole("Duke");
+        setRole(duke);
     }
     void Duke::tax() {
+        if(getGame()->currentPlayerTurn()!= this){
+            throw runtime_error("not player turn\n");
+        }
         cout<<"tax by duke\n";
+        getGame()->nextTurn();
     }
     void Duke::block(Player player) {
         cout<<"block "<<player.getName()<<"\n";

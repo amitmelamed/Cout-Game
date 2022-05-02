@@ -1,40 +1,40 @@
 //
-// Created by lucas on 26/04/2022.
+// Created by lucas on 02/05/2022.
 //
 
-#pragma once
-#include <iostream>
-#include <stdexcept>
+#ifndef COUT_GAME_GAME_HPP
+#define COUT_GAME_GAME_HPP
+
 #include <vector>
-#include <string>
+#include "Player.hpp"
+#include "enums_header.hpp"
+
 using namespace std;
 namespace coup{
-
-    class Player;
     class Game{
-        //-----variables-----
-        vector<Player*> playersList;
-        bool gameEnd;
-        bool gameLive;
-        Player *playerTurn;
-        size_t amountOfPlayers;
-
+        // -----Variables-----
+        vector<Player*> onlinePlayers;
+        Player *currentPlayer;
+        GameState gameState;
+        Player *currentGameWinner;
 
     public:
-        //-----constructors-----
+        // -----Constructors-----
         Game();
 
-        //-----getters and setters-----
-        vector<Player*> getPlayersList;
-        void increasePlayers();
+        // -----Getters-----
+        vector<string> players() const;
+        string turn() const;
+        string winner() const;
+        Player *currentPlayerTurn();
 
-        //-----functions-----
-        vector<string> players();
-        string turn();
-        string winner();
-        void addPlayer(Player *player);
-        void removePlayer(Player *player);
-        void increaseTurn();
+        // -----Setters-----
+        void setGameState(GameState state);
 
+        // -----Actions-----
+        void addPlayer(Player *);
+        void nextTurn();
+        void killPlayer(Player *);
     };
 }
+#endif //COUT_GAME_GAME_HPP

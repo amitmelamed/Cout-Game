@@ -1,89 +1,111 @@
 //
-// Created by lucas on 27/04/2022.
+// Created by lucas on 02/05/2022.
 //
+#include "Player.hpp"
+#include "Game.hpp"
+#include "enums_header.hpp"
+#include <vector>
 #include <iostream>
 #include <stdexcept>
-#include <vector>
 #include <string>
-#include "Player.hpp"
 
 using namespace std;
 namespace coup{
     /**
-     * Constructor
-     * get current game
-     * get Name
-     * set coins to 0
-     * called from inherited constructor that use setRole also
+     * Constructor get current game and name
+     * if the game have already started or even finished throw error
      * @param game
      * @param name
      */
     Player::Player(Game & game, string name) {
-        this->setName(name);
-        this->setCoins(0);
+        this->name=name;
+        this->game=&game;
+        coinsCount=0;
+        this->alive= true;
         game.addPlayer(this);
-        game.increasePlayers();
     }
 
     /**
-     * getters and setters
+     * Getters
+     * get Name,role coins and game
      */
+    string Player::getName() const {
+        return name;
+    }
+
+    string Player::role() const {
+        switch (currentRole)
+        {
+            case ambassador:   return "Ambassador";
+            case assassin:   return "Assassin";
+            case duke: return "Duke";
+            case captain: return "Captain";
+            case contessa: return "Contessa";
+            default:      return "undefined role";
+        }
+    }
+
+    int Player::coins() const {
+        return coinsCount;
+    }
+
+    Game *Player::getGame() const {
+        return game;
+    }
+    /**
+     * Setters:
+     * setRole
+     */
+
+    void Player::setRole(Roles r) {
+        this->currentRole=r;
+    }
+
     void Player::setCoins(int num) {
         this->coinsCount=num;
     }
-    void Player::setRole(string role) {
-        this->playerRole=role;
-    }
-    void Player::setName(string name) {
-        this->name=name;
-    }
-    string Player::role() {
-        return playerRole;
-    }
-    string Player::getName() {
-        return name;
-    }
-    int Player::getCoinsCount() {
-        return coinsCount;
-    }
-    string Player::coins() {
-        string s = std::to_string(coinsCount);
-        return s;
-    }
 
     /**
-     * Coup action uses 7 coins.
-     * Coup kills the rival.
-     * Coup action can be block by several roles.
-     * @param rival
-     */
-    void Player::coup(Player rival) {
-        if(getCoinsCount()<7){
-            throw std::invalid_argument("coup require 7 coins");
-        }
-        game->increaseTurn();
-    }
-    /**
-     * Income action increase the coins count by One.
+     * Increase coins by 1.
+     * cannot be blocked.
      */
     void Player::income() {
-        coinsCount++;
+        if(game->currentPlayerTurn()!= this){
+            throw runtime_error("not player turn\n");
+        }
         cout<<"income\n";
-
-
-
-
+        coinsCount++;
+        game->nextTurn();
     }
+
     /**
-     * Foreign Aid increase the coins count by Two.
-     * Can be blocked.
+     * increase coins by 2.
+     * can be blocked.
      */
     void Player::foreign_aid() {
-        coinsCount+=2;
+        if(game->currentPlayerTurn()!= this){
+            throw runtime_error("not player turn\n");
+        }
         cout<<"foreign aid\n";
-        game->increaseTurn();
-
+        coinsCount+=2;
+        game->nextTurn();
     }
-
+    /**
+     * Eliminate other player
+     * can be done by pay 7 coins.
+     */
+    void Player::coup(Player & rival) {
+        if(game->currentPlayerTurn()!= this){
+            throw runtime_error("not player turn\n");
+        }
+        cout<<"regular coup\n";
+        if(coinsCount>7){
+            coinsCount-=7;
+            game->killPlayer(&rival);
+        } else {
+            throw runtime_error("Coup require 7 coins\n");
+        }
+        game->nextTurn();
+    }
 
 }

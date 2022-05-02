@@ -9,10 +9,14 @@
 using namespace std;
 namespace coup{
     Captain::Captain(Game &game, string name) : Player(game,name){
-        this->setRole("Captain");
+        setRole(captain);
     }
     void Captain::steal(Player player) {
+        if(getGame()->currentPlayerTurn()!= this){
+            throw runtime_error("not player turn\n");
+        }
         cout<<"steal from "<<player.getName()<<"\n";
+        getGame()->nextTurn();
     }
 
     void Captain::block(Player player) {

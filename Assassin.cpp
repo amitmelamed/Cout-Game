@@ -2,6 +2,7 @@
 // Created by lucas on 27/04/2022.
 //
 #include "Assassin.hpp"
+#include "Game.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -10,11 +11,19 @@ using namespace std;
 
 namespace coup{
     Assassin::Assassin(Game &game, string name) : Player(game,name){
-        this->setRole("Assassin");
+        setRole(assassin);
     }
-    void Assassin::coup(Player rival) {
-        if(getCoinsCount()<3){
-            throw std::invalid_argument("assassins coup require 3 coins");
+    void Assassin::coup(Player &rival)  {
+        if(getGame()->currentPlayerTurn()!= this){
+            throw runtime_error("not player turn\n");
         }
+
+        if(coins()>3){
+            setCoins(coins()-3);
+            getGame()->killPlayer(&rival);
+        } else {
+            throw runtime_error("Coup require 7 coins\n");
+        }
+        getGame()->nextTurn();
     }
 }
