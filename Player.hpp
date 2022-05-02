@@ -11,7 +11,15 @@
 
 using namespace std;
 namespace coup{
+    //Define game class
     class Game;
+    /**
+     * The player class represent a player in the current Game.
+     * each player have Name.
+     * each Player have pointer to his Current Game.
+     * each Player have amount of coins.
+     * Players have 5 different Roles:Ambassador,Assassin,Captain,Contessa and Duke
+     */
     class Player{
     private:
         // -----Variables-----
@@ -37,8 +45,11 @@ namespace coup{
 
 
         //-----Actions-----
+        //Income action-get one coin-Cannot be blocked.
         void income();
+        //foreign_aid-get two coins-Can be blocked by Duke.
         void foreign_aid();
+        //Coup another player. Cost 7 coins. Cannot be blocked.
         virtual void coup(Player&);
     };
 }
