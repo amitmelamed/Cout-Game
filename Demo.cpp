@@ -5,13 +5,13 @@
  * @since: 2022-02
  */
 
-#include "Player.hpp"
-#include "Duke.hpp"
-#include "Assassin.hpp"
-#include "Ambassador.hpp"
-#include "Captain.hpp"
-#include "Contessa.hpp"
-#include "Game.hpp"
+#include "sources/Player.hpp"
+#include "sources/Duke.hpp"
+#include "sources/Assassin.hpp"
+#include "sources/Ambassador.hpp"
+#include "sources/Captain.hpp"
+#include "sources/Contessa.hpp"
+#include "sources/Game.hpp"
 
 #include <exception>
 
@@ -34,43 +34,12 @@ int main() {
 	Captain captain{game_1, "Reut"};
 	Contessa contessa{game_1, "Gilad"};
 
-	vector<string> players = game_1.players();
-
-	/*
-		prints:
-		Moshe
-		Yossi
-		Meirav
-		Reut
-		Gilad
-	*/
-	for(string name : players){
-		cout << name << endl;
-	}
-
-	// prints Moshe
-	cout << game_1.turn() << endl;
-
-	// throws no exceptions
-    for (int i = 0; i < 50; ++i) {
-        duke.income();
-        assassin.income();
-        ambassador.income();
-        captain.income();
-        contessa.income();
-    }
-    duke.coup(assassin);
-    ambassador.coup(captain);
-    contessa.coup(duke);
-    ambassador.coup(contessa);
-
-
-
-    vector<string> s=game_1.players();
-
-    for (size_t i = 0; i < s.size(); ++i) {
-        cout<<s.at(i)<<endl;
-    }
-
+    duke.income();
+    assassin.foreign_aid();
+    ambassador.income();
+    captain.income();
+    contessa.foreign_aid();
+    duke.block(contessa);
+    cout<<contessa.coins();
 }
 

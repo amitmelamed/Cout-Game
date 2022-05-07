@@ -6,7 +6,7 @@
 #define COUT_GAME_PLAYER_HPP
 
 #include <iostream>
-#include "enums_header.hpp"
+#include "../enums_header.hpp"
 
 
 using namespace std;
@@ -28,7 +28,9 @@ namespace coup{
         int coinsCount;
         Roles currentRole;
         bool alive;
+
     public:
+        int indexAtOnlinePlayers;
         // -----Constructors-----
         Player(Game &,string);
 

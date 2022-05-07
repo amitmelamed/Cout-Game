@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Player.hpp"
-#include "Assassin.hpp"
+#include "Duke.hpp"
 #include "Ambassador.hpp"
 #include "Captain.hpp"
 #include "Contessa.hpp"
@@ -13,13 +13,13 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <string>
 
 using namespace std;
 namespace coup{
-    class Duke:public Player{
+    class Assassin:public Player{
     public:
-        Duke(Game &game,string name);
-        void tax();
-        void block(Player player);
+        Assassin(Game &game,string name);
+        void coup(Player &) override;
     };
 }

@@ -7,19 +7,21 @@
 #include "Player.hpp"
 #include "Duke.hpp"
 #include "Assassin.hpp"
-#include "Captain.hpp"
+#include "Ambassador.hpp"
 #include "Contessa.hpp"
 #include "Game.hpp"
 #include <iostream>
 #include <stdexcept>
-#include <vector>
+#include <string>
 
+#include <vector>
 using namespace std;
 namespace coup{
-    class Ambassador:public Player{
+    class Captain:public Player{
     public:
-        Ambassador(Game &game,string name);
-        void transfer(Player from, Player to);
-        void block(Player player);
+        Captain(Game &game,string name);
+        void steal(Player &player);
+        void block(Player &player);
+
     };
 }

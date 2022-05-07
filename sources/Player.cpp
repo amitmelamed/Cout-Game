@@ -3,13 +3,18 @@
 //
 #include "Player.hpp"
 #include "Game.hpp"
-#include "enums_header.hpp"
+#include "../enums_header.hpp"
 #include <vector>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
+
 using namespace std;
+
+int const seven=7;
+int const ten=10;
+
 namespace coup{
     /**
      * Constructor get current game and name
@@ -17,11 +22,13 @@ namespace coup{
      * @param game
      * @param name
      */
-    Player::Player(Game & game, string name) {
-        this->name=name;
+    Player::Player(Game & game, string playerName) {
+        this->name=move(playerName);
         this->game=&game;
         coinsCount=0;
         this->alive= true;
+        currentRole= null_player;
+        indexAtOnlinePlayers= -1;
         game.addPlayer(this);
     }
 
@@ -70,12 +77,29 @@ namespace coup{
      * cannot be blocked.
      */
     void Player::income() {
+        if(game->getGameState()==PreGame){
+            game->setGameState(Live);
+        }
+
         if(game->currentPlayerTurn()!= this){
             throw runtime_error("not player turn\n");
         }
-        cout<<"income\n";
+
+        if(coins()>=ten){
+            throw runtime_error("Player must coup with 10 or more coins");
+        }
+
+        if(game->onlinePlayers.size()<=1){
+            throw runtime_error("only one player live");
+        }
+
         coinsCount++;
         game->nextTurn();
+
+        Play thisPlay(false, *this,Income);
+        getGame()->pushNextPlay(thisPlay);
+
+
     }
 
     /**
@@ -86,9 +110,19 @@ namespace coup{
         if(game->currentPlayerTurn()!= this){
             throw runtime_error("not player turn\n");
         }
-        cout<<"foreign aid\n";
+        if(coins()>=ten){
+            throw runtime_error("Player must coup with 10 or more coins");
+        }
+
+        if(game->onlinePlayers.size()<=1){
+            throw runtime_error("only one player live");
+        }
+
         coinsCount+=2;
         game->nextTurn();
+
+        Play thisPlay(true, *this,Foreign_aid);
+        getGame()->pushNextPlay(thisPlay);
     }
     /**
      * Eliminate other player
@@ -98,14 +132,26 @@ namespace coup{
         if(game->currentPlayerTurn()!= this){
             throw runtime_error("not player turn\n");
         }
-        cout<<"regular coup\n";
-        if(coinsCount>7){
-            coinsCount-=7;
+        bool rivalExist= false;
+        for (size_t i = 0; i < game->onlinePlayers.size(); ++i) {
+            if(game->onlinePlayers.at(i)==&rival) {
+                rivalExist = true;
+            }
+        }
+        if(!rivalExist) {
+            throw runtime_error("rival not exist\n");
+        }
+
+        if(coinsCount>=seven){
+            coinsCount-=seven;
             game->killPlayer(&rival);
         } else {
             throw runtime_error("Coup require 7 coins\n");
         }
         game->nextTurn();
+
+        Play thisPlay(false, *this,Coup,rival);
+        getGame()->pushNextPlay(thisPlay);
     }
 
 }

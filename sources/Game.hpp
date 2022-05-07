@@ -7,10 +7,19 @@
 
 #include <vector>
 #include "Player.hpp"
-#include "enums_header.hpp"
+#include "../enums_header.hpp"
 
 using namespace std;
 namespace coup{
+    class Play{
+    public:
+        bool canBeBlocked;
+        Player *playedBy;
+        PlayList play;
+        Player *playedOn;
+        Play(bool canBeBlocked,Player& playedBy,PlayList playType,Player& playedOn);
+        Play(bool canBeBlocked,Player& playedBy,PlayList playType);
+    };
     /**
      * The Game class represent A Live Coup Game.
      * To use The Game, First Build a Game object.
@@ -27,12 +36,16 @@ namespace coup{
 
     class Game{
         // -----Variables-----
-        vector<Player*> onlinePlayers;
         Player *currentPlayer;
         GameState gameState;
         Player *currentGameWinner;
+        vector<Play> playList;
+
+
 
     public:
+        vector<Player*> onlinePlayers;
+
         // -----Constructors-----
         Game();
 
@@ -41,14 +54,19 @@ namespace coup{
         string turn() const;
         string winner() const;
         Player *currentPlayerTurn();
+        Play getLastPlay();
+        vector<Play> getLastRound();
+        GameState getGameState();
 
         // -----Setters-----
         void setGameState(GameState state);
+        void pushNextPlay(Play);
 
         // -----Actions-----
         void addPlayer(Player *);
         void nextTurn();
         void killPlayer(Player *);
+        void revivePlayer(Player *);
     };
 }
 #endif //COUT_GAME_GAME_HPP
